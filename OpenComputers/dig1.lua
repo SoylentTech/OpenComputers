@@ -12,18 +12,16 @@ end
 
 local args, options = shell.parse(...)
 if #args < 1 then
-  io.write("Usage: dig [-s] <size>\n <depth>\n <invsize>\n")
+  io.write("Usage: dig [-s] <size>\n <depth>\n")
   io.write(" -s: shutdown when done.")
   return
+  
 end
 local depth = tonumber(args[2])
 if not depth then
   io.stderr:write("invalid depth")
   return
 end
-local invsize = tonumber(args[3])
-if not invmax then
-  io.stderr:write("invalid Inventory size")
 
 local size = tonumber(args[1])
 if not size then
@@ -31,8 +29,11 @@ if not size then
   return
 end
 
-print(g.count())
+
 g.insert(64)
+print("Fuel\n")
+print(g.count())
+
 
 local r = component.robot
 local x, y, z, f = 0, 0, 0, 0
@@ -139,18 +140,18 @@ end
 
 function checkedDrop(force)
   local empty = 0
-  for slot = 1, invsize do
+  for slot = 1, 32 do
     if robot.count(slot) == 0 then
       empty = empty + 1
     end
   end
-  if not dropping and empty == 0 or force and empty < invsize then
+  if not dropping and empty == 0 or force and empty < 32 then
     local ox, oy, oz, of = x, y, z, f
     dropping = true
     moveTo(0, 0, 0)
     turnTowards(2)
 
-    for slot = 1, invsize do
+    for slot = 1, 32 do
       if robot.count(slot) > 0 then
         robot.select(slot)
         local wait = 1
@@ -235,9 +236,6 @@ local function digLayer()
   return true
 end
 
-if z == -depth then
-    digLayer() = false
-    end
   
 repeat until not digLayer()
 moveTo(0, 0, 0)
