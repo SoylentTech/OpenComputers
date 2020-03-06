@@ -95,6 +95,9 @@ local function tryMove(side)
   else
     delta[f]()
   end
+  if z == depth then
+    return false
+    end
   return true
 end
 
